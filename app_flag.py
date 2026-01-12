@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import base64
 from pathlib import Path
-from textwrap import dedent
 
 import pandas as pd
 import streamlit as st
@@ -234,41 +233,45 @@ def prepare_sheet(sheet_name: str) -> pd.DataFrame:
 
 
 def main() -> None:
-    st.set_page_config(page_title="When Iran Goes Dark, We Get Louder 🌘", layout="wide")
+    st.set_page_config(page_title="When Iran Goes Dark, We Get Louder", layout="wide")
     inject_styles()
 
     flag_data_uri = get_flag_data_uri()
     render_flag_overlay(flag_data_uri)
+
+    st.markdown("<div class='page-shell'>", unsafe_allow_html=True)
     st.markdown(
-        dedent(
-            """
-            <div class="page-shell">
-              <div class="hero">
-                <h1>When Iran Goes Dark, We Get Louder 🌘</h1>
-                <p>
-                  Reports of internet and communications shutdowns are cutting people off while repression escalates.
-                  With communications disrupted and access to independent media severely limited, the world is seeing
-                  far too little and too many governments, including across Europe, are not responding with real urgency.
-                </p>
-                <p>
-                  This app helps Iranians abroad and their allies take swift action. Find contact information for members
-                  of the European Parliament and the Swedish Parliament, plus key influencers on X, Instagram, and TikTok,
-                  and send messages demanding:
-                </p>
-                <ul>
-                  <li><strong>meaningful pressure to protect civilians</strong></li>
-                  <li><strong>stop the repression</strong></li>
-                  <li><strong>restore internet access</strong></li>
-                </ul>
-                <p>
-                  There are two draft messages at the end of the page in English and Swedish that you can use or adapt.
-                </p>
-              </div>
-            </div>
-            """
-        ),
-        unsafe_allow_html=True,
-    )
+    """
+    <div class="hero">
+        <p>
+            Reports of internet and communications shutdowns are cutting people off while
+            repression escalates. With communications disrupted and access to independent
+            media severely limited, the world is seeing far too little and too many governments,
+            including many across Europe, aren’t responding with real urgency.
+        </p>
+
+        <p>
+            This app helps Iranians abroad and their allies take swift action. You can easily find
+            <strong>contact information</strong> for members of the European Parliament and the Swedish
+            Parliament, as well as key influencers on X, Instagram, or TikTok, and send messages
+            demanding
+        </p>
+
+        <ul>
+            <li><strong>meaningful pressure to protect civilians,</strong></li>
+            <li><strong>stop the repression, and</strong></li>
+            <li><strong>restore internet access.</strong></li>
+        </ul>
+
+        <p>
+            There are two draft messages at the end of the page — in English and Swedish —
+            that you can use or adapt.
+        </p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+ )
+
 
     if APP_IMPORT_ERROR:
         st.error(
@@ -287,10 +290,10 @@ def main() -> None:
         st.session_state.selected_sheet = None
 
     st.markdown("### Choose a list to get started")
-    options = [("-- Select a list --", None)]
+    options = [("— Select a list —", None)]
     for cat_label, keys in CATEGORY_GROUPS:
         for key in keys:
-            label = f"{cat_label} - {SHEET_CONFIG[key]['display_name']}"
+            label = f"{cat_label} — {SHEET_CONFIG[key]['display_name']}"
             options.append((label, key))
     current = st.session_state.selected_sheet
     default_idx = next((i for i, (_, k) in enumerate(options) if k == current), 0)
