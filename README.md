@@ -1,16 +1,10 @@
-# Help Break the Blackout in Iran
+# LWK Streamlit App
 
-This Streamlit app helps Iranians abroad and allies act quickly when communications are cut inside Iran. It pulls together contact details for:
-- Members of the European Parliament
-- Swedish MPs, government ministers, and embassies
-- Influencers across X, Instagram, and TikTok
+This repo tracks the public-facing Streamlit entrypoint `app_flag.py`. 
+## Setup
+- Python 3.10+ recommended.
+- Install deps: `pip install streamlit pandas openpyxl` (and any other libraries you use in `app.py`).
 
-What you can do with it:
-- Pick a list (Europe, Sweden, or international influencers) and browse contacts in a clean layout.
-- Filter by the columns relevant to each list and trim to a smaller set if needed.
-- Export the visible table to CSV to use in your own tools.
-- Copy ready-to-send draft messages in English and Swedish and adapt them for outreach.
-
-Notes:
-- The app also shows a Lion & Sun flag animation when the image file is present.
-- A local helper file (`app.py`) provides shared settings and is intentionally kept out of git. Keep it alongside `app_flag.py` when running the app locally.
+## Run
+- Start the app: `streamlit run app_flag.py`.
+- Ensure a local `app.py` exists alongside this file; `app_flag.py` imports shared constants and helpers from it but the file is not versioned.
