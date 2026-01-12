@@ -233,44 +233,44 @@ def prepare_sheet(sheet_name: str) -> pd.DataFrame:
 
 
 def main() -> None:
-    st.set_page_config(page_title="When Iran Goes Dark, We Get Louder", layout="wide")
+    st.set_page_config(page_title="Iran Emergency: Protect Civilians Now 🆘", layout="wide")
     inject_styles()
 
     flag_data_uri = get_flag_data_uri()
     render_flag_overlay(flag_data_uri)
 
     st.markdown("<div class='page-shell'>", unsafe_allow_html=True)
-    st.markdown(
-    """
-    <div class="hero">
-        <p>
-            Reports of internet and communications shutdowns are cutting people off while
-            repression escalates. With communications disrupted and access to independent
-            media severely limited, the world is seeing far too little and too many governments,
-            including many across Europe, aren’t responding with real urgency.
-        </p>
+    hero_html = """
+<div class="hero">
+<div class="eyebrow" style="background:#fff; color:#111; padding:6px 10px; border-radius:999px; display:inline-block;">Act Now!</div>
+<h1>Iran Emergency: Protect Civilians Now 🆘</h1>
+<p>
+Reports of internet and communications shutdowns are cutting people off while
+repression escalates. With communications disrupted and access to independent
+media severely limited, the world is seeing far too little and too many governments,
+including many across Europe, aren't responding with real urgency.
+</p>
 
-        <p>
-            This app helps Iranians abroad and their allies take swift action. You can easily find
-            <strong>contact information</strong> for members of the European Parliament and the Swedish
-            Parliament, as well as key influencers on X, Instagram, or TikTok, and send messages
-            demanding
-        </p>
+<p>
+This app helps Iranians abroad and their allies take swift action. You can easily find
+<strong>contact information</strong> for members of the European Parliament and the Swedish
+Parliament, as well as key influencers on X, Instagram, or TikTok, and send messages
+demanding
+</p>
 
-        <ul>
-            <li><strong>meaningful pressure to protect civilians,</strong></li>
-            <li><strong>stop the repression, and</strong></li>
-            <li><strong>restore internet access.</strong></li>
-        </ul>
+<ul>
+<li><strong>meaningful pressure to protect civilians,</strong></li>
+<li><strong>stop the repression, and</strong></li>
+<li><strong>restore internet access.</strong></li>
+</ul>
 
-        <p>
-            There are two draft messages at the end of the page — in English and Swedish —
-            that you can use or adapt.
-        </p>
-    </div>
-    """,
-    unsafe_allow_html=True,
- )
+<p>
+There are two draft messages at the end of the page - in English and Swedish -
+that you can use or adapt.
+</p>
+</div>
+""".strip()
+    st.markdown(hero_html, unsafe_allow_html=True)
 
 
     if APP_IMPORT_ERROR:
@@ -290,10 +290,10 @@ def main() -> None:
         st.session_state.selected_sheet = None
 
     st.markdown("### Choose a list to get started")
-    options = [("— Select a list —", None)]
+    options = [("-- Select a list --", None)]
     for cat_label, keys in CATEGORY_GROUPS:
         for key in keys:
-            label = f"{cat_label} — {SHEET_CONFIG[key]['display_name']}"
+            label = f"{cat_label} - {SHEET_CONFIG[key]['display_name']}"
             options.append((label, key))
     current = st.session_state.selected_sheet
     default_idx = next((i for i, (_, k) in enumerate(options) if k == current), 0)
@@ -320,7 +320,7 @@ def main() -> None:
         st.caption("Change the list above to load a different dataset.")
         st.markdown("<hr class='soft-line' />", unsafe_allow_html=True)
         st.markdown(
-            "<div class='footer-note'>Made with ❤️ for the people of Iran.</div>",
+            "<div class='footer-note'>Made with ❤️ for the people of Iran 🫂</div>",
             unsafe_allow_html=True,
         )
         st.markdown("</div>", unsafe_allow_html=True)
@@ -460,37 +460,39 @@ def main() -> None:
 
         st.markdown("**Draft message**")
         default_message_en = (
-            "Subject: Iran blackout — don’t let repression happen in the dark\n\n"
+            "Subject: Iran — credible reports of killings under a communications blackout\n\n"
             "Hello,\n\n"
-            "I’m writing with urgency about reports of widespread internet and communications disruptions in Iran. "
-            "When people can’t call, upload, or be reached, abuses become harder to document—and easier to deny.\n\n"
-            "Please do not treat this as a distant issue. We need clear, public leadership and real pressure. "
-            "I urge you to:\n"
-            "• Speak out and keep attention on Iran’s blackout and repression\n"
-            "• Support independent reporting and human-rights monitoring\n"
-            "• Back practical measures that help restore connectivity and protect civilians\n\n"
-            "Every day of silence gives more cover for violence. Please act.\n\n"
-            "Sincerely,\n"
-            "[Your name]\n"
-            "[City/Country]"
+            "I’m writing because people are being killed in Iran while communications are being cut. "
+          "When the internet and phone networks go dark, violence is easier to carry out and harder to prove. "
+         "This is not just a “blackout”—it is cover.\n\n"
+         "Please act with urgency. I urge you to:\n"
+         "• Publicly condemn the killings and demand an immediate end to violence against civilians\n"
+         "• Push for immediate protective and accountability measures (not statements)\n"
+         "• Support independent investigation and human-rights monitoring\n\n"
+         "Restoring open internet access is important—but first priority is stopping the killing and protecting civilians. "
+         "Silence and delay cost lives.\n\n"
+         "Sincerely,\n"
+         "[Your name]\n"
+         "[City/Country]"
         )
         st.text_area("Message template (English, editable)", default_message_en, height=220)
 
         default_message_sv = (
-            "Ämne: Iran stängs ner — låt inte förtryck ske i mörker\n\n"
+            "Ämne: Iran – dödligt våld i skuggan av nedsläckta kommunikationer\n\n"
             "Hej,\n\n"
-            "Jag skriver med stor oro och brådska om rapporter om omfattande störningar i internet och kommunikation i Iran. "
-            "När människor inte kan ringa, dela information eller ens nå varandra blir övergrepp svårare att dokumentera "
-            "och lättare att förneka.\n\n"
-            "Det här får inte behandlas som en avlägsen fråga. Vi behöver tydligt, offentligt ledarskap och verklig press. "
-            "Jag uppmanar dig att:\n"
-            "• Agera offentligt och hålla fokus på Irans blackout och repression\n"
-            "• Stödja oberoende rapportering och människorättsövervakning\n"
-            "• Ställa dig bakom konkreta åtgärder som återställer uppkoppling och skyddar civila\n\n"
-            "Varje dag av tystnad ger mer utrymme för våld. Snälla, agera.\n\n"
-            "Vänliga hälsningar,\n"
-            "[Ditt namn]\n"
-            "[Stad/Land]"
+         "Jag skriver med stor oro och brådska med anledning av rapporter om dödligt våld och brutalt förtryck i Iran, "
+          "samtidigt som internet och kommunikationer stängs ner eller störs. "
+         "När människor inte kan ringa, nå varandra eller dela bevis blir övergrepp lättare att genomföra – och svårare att "
+         "dokumentera och utkräva ansvar för.\n\n"
+         "Det här får inte behandlas som en avlägsen fråga. Jag uppmanar dig att agera skyndsamt och tydligt:\n"
+         "• Fördöm dödandet och kräv ett omedelbart stopp för våld mot civila\n"
+         "• Stöd oberoende granskning, dokumentation och människorättsövervakning\n"
+         "• Driv på för verkliga, samordnade åtgärder och konsekvenser – inte bara uttalanden\n\n"
+         "Att återställa ett öppet internet är viktigt, men först måste dödandet stoppas och civila skyddas. "
+         "Varje dag av tystnad kostar liv.\n\n"
+         "Vänliga hälsningar,\n"
+         "[Ditt namn]\n"
+         "[Stad/Land]"
         )
         st.text_area("Meddelande (svenska, redigerbar)", default_message_sv, height=220)
 
