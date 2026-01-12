@@ -14,3 +14,4 @@ What you can do with it:
 Notes:
 - The app also shows a Lion & Sun flag animation when the image file is present.
 - Shared settings and data-loading helpers live in `app_shared.py` (tracked). If you keep a private `app.py`, ensure it stays in sync or move its contents into `app_shared.py` for deployments like Streamlit Cloud.
+- The contact data must be available to the app. Commit `iran_blackout_contacts.xlsx` (unignored) or otherwise provide the workbook at runtime on Streamlit Cloud.

@@ -6,6 +6,7 @@ __pycache__/
 *.pyo
 *.pyd
 *.xlsx
+!iran_blackout_contacts.xlsx
 
 # Keep the local app entrypoint out of git
 app.py

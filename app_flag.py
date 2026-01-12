@@ -6,14 +6,41 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
-from app_shared import (
-    FILE_PATH,
-    SHEET_CONFIG,
-    DISPLAY_COLUMNS,
-    extract_emails,
-    filter_frame,
-    load_sheet,
-)
+try:
+    from app_shared import (
+        FILE_PATH,
+        SHEET_CONFIG,
+        DISPLAY_COLUMNS,
+        extract_emails,
+        filter_frame,
+        load_sheet,
+    )
+    APP_IMPORT_ERROR = None
+except ModuleNotFoundError:
+    try:
+        from app import (
+            FILE_PATH,
+            SHEET_CONFIG,
+            DISPLAY_COLUMNS,
+            extract_emails,
+            filter_frame,
+            load_sheet,
+        )
+        APP_IMPORT_ERROR = None
+    except ModuleNotFoundError as exc:
+        APP_IMPORT_ERROR = str(exc)
+        FILE_PATH = Path("contacts.xlsx")
+        SHEET_CONFIG: dict[str, dict] = {}
+        DISPLAY_COLUMNS: dict[str, list[str]] = {}
+
+        def extract_emails(df: pd.DataFrame, email_cols: list[str]) -> list[str]:
+            return []
+
+        def filter_frame(df: pd.DataFrame, filters: dict, container) -> pd.DataFrame:
+            return df
+
+        def load_sheet(sheet_name: str) -> pd.DataFrame:
+            raise FileNotFoundError("Missing app_shared.py/app.py with sheet loading logic.")
 
 FLAG_PATH = Path(__file__).parent / "flag.png"
 CATEGORY_GROUPS = [
@@ -235,6 +262,15 @@ def main() -> None:
         """,
         unsafe_allow_html=True,
     )
+
+    if APP_IMPORT_ERROR:
+        st.error(
+            "Cannot load app configuration. Ensure `app_shared.py` (recommended) or `app.py` "
+            "is present with FILE_PATH, SHEET_CONFIG, DISPLAY_COLUMNS, extract_emails, "
+            "filter_frame, and load_sheet defined."
+        )
+        st.markdown("</div>", unsafe_allow_html=True)
+        return
 
     if not FILE_PATH.exists():
         st.error(f"Cannot find {FILE_PATH}. Please place the Excel file next to this app.")
