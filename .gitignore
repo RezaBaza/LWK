@@ -1,0 +1,11 @@
+__pycache__/
+.DS_Store
+.env
+.venv/
+*.pyc
+*.pyo
+*.pyd
+*.xlsx
+
+# Keep the local app entrypoint out of git
+app.py
