@@ -95,6 +95,17 @@ def inject_styles() -> None:
         .filters-box { margin-bottom: 1rem; }
         .cta-badge { display:inline-block; padding: 0.25rem 0.55rem; border-radius: 999px; background: rgba(34,211,238,0.1); color:#22d3ee; font-weight:600; font-size:0.8rem; }
         .cat-label { margin: 0.25rem 0 0.35rem; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.04em; color: #94a3b8; text-transform: uppercase; }
+        .mobile-picker { margin: 0.5rem 0 0.75rem; }
+        @media (max-width: 900px) {
+            .hero h1 { font-size: 1.8rem; }
+            .hero p { font-size: 0.95rem; }
+            .panel { padding: 0.85rem 0.9rem; }
+            .sidebar-panel { position: static; }
+            .mobile-picker { display: block; }
+        }
+        @media (min-width: 901px) {
+            .mobile-picker { display: none; }
+        }
         </style>
         """,
         unsafe_allow_html=True,
@@ -269,6 +280,23 @@ def main() -> None:
     if "selected_sheet" not in st.session_state:
         st.session_state.selected_sheet = default_sheet
 
+    # Mobile-friendly quick picker
+    all_sheet_keys = [key for _, keys in CATEGORY_GROUPS for key in keys]
+    current = st.session_state.selected_sheet
+    with st.container():
+        st.markdown('<div class="mobile-picker">', unsafe_allow_html=True)
+        selected_mobile = st.selectbox(
+            "Choose a list (mobile-friendly)",
+            options=all_sheet_keys,
+            index=all_sheet_keys.index(current) if current in all_sheet_keys else 0,
+            format_func=lambda k: SHEET_CONFIG[k]["display_name"],
+            label_visibility="collapsed",
+        )
+        st.markdown("</div>", unsafe_allow_html=True)
+    if selected_mobile != current:
+        st.session_state.selected_sheet = selected_mobile
+        current = selected_mobile
+
     selector_col, content_col = st.columns([1, 2], gap="large")
 
     with selector_col:
@@ -322,13 +350,13 @@ def main() -> None:
             st.markdown('</div>', unsafe_allow_html=True)
             return
 
-        filter_area = st.container()
-        filter_area.subheader("Filters")
-        filter_area.caption(
-            f"Rows: {len(df)} | Email columns: {', '.join(cfg['email_cols']) or 'None'}"
-        )
+        with st.expander("Filters", expanded=False):
+            filter_area = st.container()
+            filter_area.caption(
+                f"Rows: {len(df)} | Email columns: {', '.join(cfg['email_cols']) or 'None'}"
+            )
 
-        filtered_df = filter_frame(df, cfg["filters"], filter_area)
+            filtered_df = filter_frame(df, cfg["filters"], filter_area)
 
         if sheet_name == "Influencers_IG_Top1000":
             if "Followers" in df.columns:
