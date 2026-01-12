@@ -95,16 +95,11 @@ def inject_styles() -> None:
         .filters-box { margin-bottom: 1rem; }
         .cta-badge { display:inline-block; padding: 0.25rem 0.55rem; border-radius: 999px; background: rgba(34,211,238,0.1); color:#22d3ee; font-weight:600; font-size:0.8rem; }
         .cat-label { margin: 0.25rem 0 0.35rem; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.04em; color: #94a3b8; text-transform: uppercase; }
-        .mobile-picker { margin: 0.5rem 0 0.75rem; }
         @media (max-width: 900px) {
             .hero h1 { font-size: 1.8rem; }
             .hero p { font-size: 0.95rem; }
             .panel { padding: 0.85rem 0.9rem; }
             .sidebar-panel { position: static; }
-            .mobile-picker { display: block; }
-        }
-        @media (min-width: 901px) {
-            .mobile-picker { display: none; }
         }
         </style>
         """,
@@ -280,48 +275,34 @@ def main() -> None:
     if "selected_sheet" not in st.session_state:
         st.session_state.selected_sheet = default_sheet
 
-    # Mobile-friendly quick picker
-    all_sheet_keys = [key for _, keys in CATEGORY_GROUPS for key in keys]
-    current = st.session_state.selected_sheet
-    with st.container():
-        st.markdown('<div class="mobile-picker">', unsafe_allow_html=True)
-        selected_mobile = st.selectbox(
-            "Choose a list (mobile-friendly)",
-            options=all_sheet_keys,
-            index=all_sheet_keys.index(current) if current in all_sheet_keys else 0,
-            format_func=lambda k: SHEET_CONFIG[k]["display_name"],
-            label_visibility="collapsed",
-        )
-        st.markdown("</div>", unsafe_allow_html=True)
-    if selected_mobile != current:
-        st.session_state.selected_sheet = selected_mobile
-        current = selected_mobile
-
     selector_col, content_col = st.columns([1, 2], gap="large")
 
     with selector_col:
         st.markdown('<div class="panel sidebar-panel">', unsafe_allow_html=True)
-        current = st.session_state.selected_sheet
+        # Single select for all devices to reduce scrolling on mobile.
+        options = []
         for cat_label, keys in CATEGORY_GROUPS:
-            st.markdown(f"<div class='cat-label'>{cat_label}</div>", unsafe_allow_html=True)
             for key in keys:
-                cfg_entry = SHEET_CONFIG[key]
-                is_selected = current == key
-                if st.button(
-                    cfg_entry["display_name"],
-                    key=f"btn_{key}",
-                    type="primary" if is_selected else "secondary",
-                    use_container_width=True,
-                ):
-                    st.session_state.selected_sheet = key
-                    current = key
-        st.caption("Choose a list by category; filters and exports are on the right.")
+                label = f"{cat_label} — {SHEET_CONFIG[key]['display_name']}"
+                options.append((label, key))
+        current = st.session_state.selected_sheet
+        default_idx = next((i for i, (_, k) in enumerate(options) if k == current), 0)
+        label, choice_key = st.selectbox(
+            "Choose a list",
+            options,
+            index=default_idx,
+            format_func=lambda opt: opt[0],
+        )
+        if choice_key != current:
+            st.session_state.selected_sheet = choice_key
+            current = choice_key
+        st.caption("Pick a list; filters and exports are below. Draft messages are at the end.")
         st.markdown("<hr class='soft-line' />", unsafe_allow_html=True)
         st.markdown(
             "<div class='footer-note'>Made with ❤️ for the people of Iran.</div>",
             unsafe_allow_html=True,
         )
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
 
     sheet_name = st.session_state.selected_sheet
     cfg = SHEET_CONFIG[sheet_name]
