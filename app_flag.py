@@ -243,7 +243,7 @@ def main() -> None:
             Reports of internet and communications shutdowns are cutting people off while repression escalates.
             With communications disrupted and independent media access limited, the world isn’t seeing enough and too many governments, including across Europe, aren’t responding with real urgency.
             <br/><br/>
-            This app helps Iranians abroad and their allies take swift action. Easily find contact information for members of European and Swedish Parliaments, and key influencers across X, Instagram, and TikTok. Use the app to send messages and demand meaningful pressure to protect civilians, stop repression, and restore internet access
+            This app helps Iranians abroad and their allies take swift action. Easily find contact information for members of European and Swedish Parliaments, key influencers across X, Instagram, or TikTok. Send messages and demand meaningful pressure to protect civilians, stop repression, and restore internet access
             <br/><br/>
             There are two draft messages at the end of the page in English and Swedish that you can use..
             </p>
