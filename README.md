@@ -13,4 +13,4 @@ What you can do with it:
 
 Notes:
 - The app also shows a Lion & Sun flag animation when the image file is present.
-- A local helper file (`app.py`) provides shared settings and is intentionally kept out of git. Keep it alongside `app_flag.py` when running the app locally.
+- Shared settings and data-loading helpers live in `app_shared.py` (tracked). If you keep a private `app.py`, ensure it stays in sync or move its contents into `app_shared.py` for deployments like Streamlit Cloud.
