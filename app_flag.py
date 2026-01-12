@@ -451,6 +451,10 @@ that you can use or adapt.
             column_config["Contact_URL"] = st.column_config.LinkColumn(
                 "Contact URL", display_text="Open profile"
             )
+        if "ep_profile_url" in display_df.columns:
+            column_config["ep_profile_url"] = st.column_config.LinkColumn(
+                "Profile URL", display_text="Open profile"
+            )
 
         st.dataframe(display_df, column_config=column_config, use_container_width=True)
         csv_data = display_df.to_csv(index=False)

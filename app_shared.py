@@ -18,8 +18,8 @@ SHEET_CONFIG = {
     },
     "EU_MEPs_All_2024_2029": {
         "display_name": "EU MEPs 2024–2029",
-        "email_cols": ["Email (generated guess)"],
-        "filters": ["Country"],
+        "email_cols": ["email"],
+        "filters": ["country"],
         "description": "Members of the European Parliament",
     },
     "Sweden_Gov_Ministers": {
@@ -63,7 +63,7 @@ SHEET_CONFIG = {
 
 DISPLAY_COLUMNS = {
     "Riksdag_SeatHolders_349": ["Name", "Party", "Email"],
-    "EU_MEPs_All_2024_2029": ["Name", "Profile_URL", "National_party", "Email (generated guess)"],
+    "EU_MEPs_All_2024_2029": ["name", "email", "country", "national_party", "ep_profile_url"],
     "Sweden_Gov_Ministers": ["Name", "Title", "Contact email (registrator)"],
     "Sweden_Gov_Deputies_Links": ["Minister", "Minister title", "Deputies page (state secretaries)"],
     "Sweden_Embassies_All": ["Country/Area", "Location", "Contact_URL", "Email"],
