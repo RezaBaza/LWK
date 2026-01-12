@@ -271,32 +271,38 @@ def main() -> None:
         st.markdown("</div>", unsafe_allow_html=True)
         return
 
-    default_sheet = CATEGORY_GROUPS[0][1][0]
     if "selected_sheet" not in st.session_state:
-        st.session_state.selected_sheet = default_sheet
+        st.session_state.selected_sheet = None
+
+    st.markdown("### Choose a list to get started")
+    options = [("— Select a list —", None)]
+    for cat_label, keys in CATEGORY_GROUPS:
+        for key in keys:
+            label = f"{cat_label} — {SHEET_CONFIG[key]['display_name']}"
+            options.append((label, key))
+    current = st.session_state.selected_sheet
+    default_idx = next((i for i, (_, k) in enumerate(options) if k == current), 0)
+    selected_label, selected_key = st.selectbox(
+        "Lists",
+        options,
+        index=default_idx,
+        format_func=lambda opt: opt[0],
+        label_visibility="collapsed",
+    )
+    if selected_key != current:
+        st.session_state.selected_sheet = selected_key
+        current = selected_key
+
+    if not current:
+        st.info("Select a list above. Filters, table, and draft messages will appear here.")
+        return
 
     selector_col, content_col = st.columns([1, 2], gap="large")
 
     with selector_col:
         st.markdown('<div class="panel sidebar-panel">', unsafe_allow_html=True)
-        # Single select for all devices to reduce scrolling on mobile.
-        options = []
-        for cat_label, keys in CATEGORY_GROUPS:
-            for key in keys:
-                label = f"{cat_label} — {SHEET_CONFIG[key]['display_name']}"
-                options.append((label, key))
-        current = st.session_state.selected_sheet
-        default_idx = next((i for i, (_, k) in enumerate(options) if k == current), 0)
-        label, choice_key = st.selectbox(
-            "Choose a list",
-            options,
-            index=default_idx,
-            format_func=lambda opt: opt[0],
-        )
-        if choice_key != current:
-            st.session_state.selected_sheet = choice_key
-            current = choice_key
-        st.caption("Pick a list; filters and exports are below. Draft messages are at the end.")
+        st.markdown(f"**Selected:** {SHEET_CONFIG[current]['display_name']}")
+        st.caption("Change the list above to load a different dataset.")
         st.markdown("<hr class='soft-line' />", unsafe_allow_html=True)
         st.markdown(
             "<div class='footer-note'>Made with ❤️ for the people of Iran.</div>",
